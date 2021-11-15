@@ -1,0 +1,12 @@
+[myself]
+malvin-ubuntu.local ansible_ssh_host=127.0.0.1 ansible_ssh_port=22
+
+[cdp717]
+malvin-cdp-m1-2111 ansible_ssh_host=172.16.1.246 ansible_ssh_port=22
+malvin-cdp-m2-2111 ansible_ssh_host=172.16.1.247 ansible_ssh_port=22
+malvin-cdp-s1-2111 ansible_ssh_host=172.16.1.248 ansible_ssh_port=22
+
+[cdh5]
+malvin-cdh5-m1 ansible_ssh_host=172.16.1.216 ansible_ssh_port=22
+malvin-cdh5-m2 ansible_ssh_host=172.16.1.217 ansible_ssh_port=22
+malvin-cdh5-s1 ansible_ssh_host=172.16.1.218 ansible_ssh_port=22

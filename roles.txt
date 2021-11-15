@@ -1,0 +1,7 @@
+*
+guest_os_settings
+hadoop_add_node
+hadoop_create_cluster
+hadoop_delete_node
+hadoop_update_node
+host_os_kvm_setup

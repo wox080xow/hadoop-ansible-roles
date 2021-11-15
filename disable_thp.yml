@@ -1,0 +1,33 @@
+---
+
+
+- name: Disable THP
+  hosts: test
+  tasks:
+
+    - name: Ensure thp-disable service exists
+      copy:
+        src: thp-disable.service
+        dest: /etc/systemd/system/disable-transparent-huge-pages.service
+        owner: root
+        group: root
+      notify: Reload systemd
+
+    - name: Check if disable-transparent-huge-pages service is already run
+      shell: cat /sys/kernel/mm/transparent_hugepage/enabled
+      register: _huge_page_status
+      ignore_errors: yes
+      changed_when: _huge_page_status.stdout != "always madvise [never]"
+
+    - name: Enable disable-transparent-huge-pages service
+      service:
+        name: disable-transparent-huge-pages.service
+        state: started
+        enabled: yes
+      when: _huge_page_status.stdout != "always madvise [never]"
+
+    - name: Disable THP grub
+      lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+        line: GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=never quiet splash"

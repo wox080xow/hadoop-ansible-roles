@@ -1,0 +1,13 @@
+[myself]
+malvin-ubuntu.local ansible_ssh_host=127.0.0.1 ansible_ssh_port=22
+
+[hosts]
+malvin-host-01.example.com ansible_ssh_host=172.16.1.71 ansible_ssh_port=22
+malvin-host-02.example.com ansible_ssh_host=172.16.1.101 ansible_ssh_port=22
+
+[guests]
+malvin-guest-01-01 ansible_ssh_host=192.168.1.11 ansible_ssh_port=22
+malvin-guest-01-02 ansible_ssh_host=192.168.1.12 ansible_ssh_port=22
+malvin-guest-02-01 ansible_ssh_host=192.168.2.11 ansible_ssh_port=22
+malvin-guest-02-02 ansible_ssh_host=192.168.2.12 ansible_ssh_port=22
+

@@ -1,0 +1,32 @@
+---
+
+
+- name: Install and setup NTP 
+  hosts: test
+  tasks:
+
+    - name: Install NTP
+      apt:
+        name:
+          - ntp
+          - ntpstat
+      become: true
+
+    - name: Setup NTP
+      copy:
+        src: ntp.conf
+        dest: /etc/ntp.conf
+      become: true
+
+    - name: Restart and enable NTP
+      systemd:
+        name: ntp
+        state: restarted
+        enabled: yes
+      become: true
+
+    - name: Add DNS
+      lineinfile:
+        path: /etc/resolv.conf
+        line: nameserver 8.8.8.8
+      become: true

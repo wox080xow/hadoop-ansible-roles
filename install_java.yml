@@ -1,0 +1,28 @@
+---
+
+
+- name: Install and setup JAVA 
+  hosts: myself
+  tasks:
+
+    - name: Install JAVA
+      apt:
+        name:
+          - openjdk-8-jdk-headless
+      become: true
+
+    - name: Setup JAVA
+      blockinfile:
+        path: /etc/profile
+        block: |
+          # setup JAVA
+          export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+          PATH=$PATH:$HOME/.local/bin:$HOME/bin:$JAVA_HOME/bin
+          export PATH
+      become: true
+
+    - name: Source profile
+      shell: 'source /etc/profile'
+      args: 
+        executable: /bin/bash
+

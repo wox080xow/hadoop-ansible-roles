@@ -1,0 +1,116 @@
+---
+
+- name: Setup language
+  ansible.builtin.blockinfile:
+    path: /etc/profile
+    block: |
+        # setup language
+        export LANGUAGE=en_US.UTF-8
+        export LANG=en_US.UTF-8
+        export LC_ALL=en_US.UTF-8
+  become: yes
+
+- name: Stop and disable firewall
+  systemd:
+    name: ufw
+    state: stopped
+    enabled: no 
+
+- name: Disable IPv6 all
+  ansible.posix.sysctl:
+    name: net.ipv6.conf.all.disable_ipv6
+    value: '1'
+    sysctl_set: yes
+
+- name: Disable IPv6 default
+  ansible.posix.sysctl:
+    name: net.ipv6.conf.default.disable_ipv6
+    value: '1'
+    sysctl_set: yes
+
+- name: Disable IPv6 local
+  ansible.posix.sysctl:
+    name: net.ipv6.conf.lo.disable_ipv6
+    value: '1'
+    sysctl_set: yes
+
+- name: Edit swappiness
+  ansible.posix.sysctl:
+    name: vm.swappiness
+    value: '1'
+    sysctl_set: yes
+
+# Regy's https://github.com/ReGYChang/mongodb-ansible-roles/blob/f14c04bde7569ac518423b4a1abd44a9b39aa6c1/roles/mongodb_linux/tasks/main.yml   
+- name: Ensure thp-disable service exists
+  copy:
+    src: thp-disable.service
+    dest: /etc/systemd/system/disable-transparent-huge-pages.service
+    owner: root
+    group: root
+  notify: Reload systemd
+
+- name: Check if disable-transparent-huge-pages service is already run
+  shell: cat /sys/kernel/mm/transparent_hugepage/enabled
+  register: _huge_page_status
+  ignore_errors: yes
+  changed_when: _huge_page_status.stdout != "always madvise [never]"
+
+- name: Enable disable-transparent-huge-pages service
+  service:
+    name: disable-transparent-huge-pages.service
+    state: started
+    enabled: yes
+  when: _huge_page_status.stdout != "always madvise [never]"
+
+- name: Disable THP grub
+  lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+    line: GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=never quiet splash"
+
+- name: Install JAVA
+  apt:
+    name:
+      - openjdk-8-jdk-headless
+  become: true
+
+- name: Setup JAVA
+  blockinfile:
+    path: /etc/profile
+    block: |
+      # setup JAVA
+      export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+      PATH=$PATH:$HOME/.local/bin:$HOME/bin:$JAVA_HOME/bin
+      export PATH
+  become: true
+
+- name: Source profile
+  shell: 'source /etc/profile'
+  args:
+    executable: /bin/bash
+
+- name: Install NTP
+  apt:
+    name:
+      - ntp
+      - ntpstat
+  become: true
+
+- name: Setup NTP
+  copy:
+    src: ntp.conf
+    dest: /etc/ntp.conf
+  become: true
+
+- name: Restart and enable NTP
+  systemd:
+    name: ntp
+    state: restarted
+    enabled: yes
+  become: true
+
+- name: Add DNS
+  lineinfile:
+    path: /etc/resolv.conf
+    line: nameserver 8.8.8.8
+  become: true
