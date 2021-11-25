@@ -1,0 +1,9 @@
+---
+
+- name: Before Installation of CDH 
+  hosts: cdh5-sn
+  tasks:
+    
+    - name: OS settings
+      include_role:
+        name: os_settings

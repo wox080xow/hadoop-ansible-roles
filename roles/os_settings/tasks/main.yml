@@ -10,11 +10,25 @@
         export LC_ALL=en_US.UTF-8
   become: yes
 
-- name: Stop and disable firewall
+- name: Disable SELINUX (CentOS)
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: SELINUX=disabled
+
+- name: Stop and disable firewall "ufw"
   systemd:
     name: ufw
     state: stopped
     enabled: no 
+  when: ansible_distribution == "Ubuntu"
+
+- name: Stop and disable firewall "firewalld" 
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+  when: ansible_distribution == "CentOS"
 
 - name: Disable IPv6 all
   ansible.posix.sysctl:
@@ -68,13 +82,21 @@
     regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
     line: GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=never quiet splash"
 
-- name: Install JAVA
+- name: Install JAVA (apt)
   apt:
     name:
       - openjdk-8-jdk-headless
   become: true
+  when: ansible_distribution == "Ubuntu"
 
-- name: Setup JAVA
+- name: Install JAVA (yum)
+  yum:
+    name:
+      - java-1.8.0-openjdk-devel
+  become: true
+  when: ansible_distribution == "CentOS"
+
+- name: Setup JAVA (Ubuntu)
   blockinfile:
     path: /etc/profile
     block: |
@@ -83,18 +105,38 @@
       PATH=$PATH:$HOME/.local/bin:$HOME/bin:$JAVA_HOME/bin
       export PATH
   become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Setup JAVA (CentOS)
+  blockinfile:
+    path: /etc/profile
+    block: |
+      # setup JAVA
+      export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.312.b07-1.el7_9.x86_64
+      PATH=$PATH:$HOME/.local/bin:$HOME/bin:$JAVA_HOME/bin
+      export PATH
+  become: true
+  when: ansible_distribution == "CentOS"
 
 - name: Source profile
   shell: 'source /etc/profile'
   args:
     executable: /bin/bash
 
-- name: Install NTP
+- name: Install NTP (apt)
   apt:
     name:
       - ntp
       - ntpstat
   become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install NTP (yum)
+  yum:
+    name:
+      - ntp
+  become: true
+  when: ansible_distribution == "CentOS"
 
 - name: Setup NTP
   copy:
@@ -102,12 +144,21 @@
     dest: /etc/ntp.conf
   become: true
 
-- name: Restart and enable NTP
+- name: Restart and enable NTP "ntp"
   systemd:
     name: ntp
     state: restarted
     enabled: yes
   become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Restart and enable NTP "ntpd"
+  systemd:
+    name: ntpd
+    state: restarted
+    enabled: yes
+  become: true
+  when: ansible_distribution == "CentOS"
 
 - name: Add DNS
   lineinfile:

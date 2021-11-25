@@ -1,9 +1,0 @@
----
-
-- name: Disable THP
-  hosts: test
-  tasks:
-    
-    - name: OS settings
-      include_role:
-        name: guest_os_settings
