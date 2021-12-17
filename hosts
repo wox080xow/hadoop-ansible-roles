@@ -21,5 +21,11 @@ malvin-cdh5-m1 ansible_ssh_host=172.16.1.216 ansible_ssh_port=22 ansible_user=ro
 malvin-cdh5-m2 ansible_ssh_host=172.16.1.217 ansible_ssh_port=22 ansible_user=root
 malvin-cdh5-s1 ansible_ssh_host=172.16.1.218 ansible_ssh_port=22 ansible_user=root
 
-[cdh5-sn]
+[cdh5_sn]
 malvin-cdh5-single-node ansible_ssh_host=172.16.1.220 ansible_ssh_port=22 ansible_user=root
+
+[cdh5_isi]
+malvin-cdh5-with-isilon ansible_ssh_host=172.16.1.80 ansible_ssh_port=22 ansible_user=root
+
+[centos7]
+malvin-centos7 ansible_ssh_host=172.16.1.79 ansible_ssh_port=22 ansible_user=root

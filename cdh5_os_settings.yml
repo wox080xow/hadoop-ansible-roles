@@ -1,7 +1,7 @@
 ---
 
 - name: Before Installation of CDH 
-  hosts: cdh5-sn
+  hosts: cdh5_isi
   tasks:
     
     - name: OS settings

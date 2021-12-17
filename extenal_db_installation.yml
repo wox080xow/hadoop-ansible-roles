@@ -1,0 +1,9 @@
+---
+
+- name: Before Installation of CDH 
+  hosts: centos7
+  tasks:
+    
+    - name: external database installation
+      include_role:
+        name: external_database_installation

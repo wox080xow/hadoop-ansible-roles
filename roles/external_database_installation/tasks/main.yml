@@ -1,0 +1,22 @@
+---
+
+- name: Install rsync (yum)
+  yum:
+    name:
+      - rsync
+  become: true
+  when: ansible_distribution == "CentOS"
+
+- name: Synchronization of src on the control machine to dest on the remote hosts
+  ansible.posix.synchronize:
+    src: files/
+    dest: packages/
+
+- name: Install PosgreSQL 9.6 (yum)
+  yum:
+    name:
+      - packages/postgresql96-9.6.22-1PGDG.rhel7.x86_64.rpm
+      - packages/postgresql96-libs-9.6.22-1PGDG.rhel7.x86_64.rpm
+      - packages/postgresql96-server-9.6.22-1PGDG.rhel7.x86_64.rpm
+  become: true
+  when: ansible_distribution == "CentOS"

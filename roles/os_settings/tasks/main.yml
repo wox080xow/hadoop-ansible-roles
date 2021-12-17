@@ -54,7 +54,8 @@
     value: '1'
     sysctl_set: yes
 
-# Regy's https://github.com/ReGYChang/mongodb-ansible-roles/blob/f14c04bde7569ac518423b4a1abd44a9b39aa6c1/roles/mongodb_linux/tasks/main.yml   
+# from Regy's Github
+# https://github.com/ReGYChang/mongodb-ansible-roles/blob/f14c04bde7569ac518423b4a1abd44a9b39aa6c1/roles/mongodb_linux/tasks/main.yml   
 - name: Ensure thp-disable service exists
   copy:
     src: thp-disable.service
