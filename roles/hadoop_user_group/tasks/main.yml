@@ -1,0 +1,36 @@
+- name: Delete Hadoop Users & Groups
+  user:
+    name: "{{ item.name }}"
+    state: absent
+    force: yes
+  with_items:
+    - { name: zookeeper, uid: 1000 }
+    - { name: hdfs, uid: 1001 }
+    - { name: yarn, uid: 1002 }
+    - { name: mapred, uid: 1003 }
+    - { name: hive, uid: 1004 }
+    - { name: impala, uid: 1005 }
+    - { name: ranger, uid: 1006 }
+    - { name: spark, uid: 1007 }
+    - { name: hbase, uid: 1008 }
+    - { name: hue, uid: 1009 }
+    - { name: oozie, uid: 1010 }
+
+- name: Create Hadoop Users & Groups
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    groups: hadoop
+    state: present
+  with_items:
+    - { name: zookeeper, uid: 1000 }
+    - { name: hdfs, uid: 1001 }
+    - { name: yarn, uid: 1002 }
+    - { name: mapred, uid: 1003 }
+    - { name: hive, uid: 1004 }
+    - { name: impala, uid: 1005 }
+    - { name: ranger, uid: 1006 }
+    - { name: spark, uid: 1007 }
+    - { name: hbase, uid: 1008 }
+    - { name: hue, uid: 1009 }
+    - { name: oozie, uid: 1010 }

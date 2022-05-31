@@ -1,0 +1,135 @@
+- name: Delete Hadoop Users
+  user:
+    name: "{{ item.name }}"
+    state: absent
+    force: yes
+  with_items:
+    - { name: zookeeper, uid: 1000 }
+    - { name: hdfs, uid: 1001 }
+    - { name: yarn, uid: 1002 }
+    - { name: mapred, uid: 1003 }
+    - { name: hive, uid: 1004 }
+    - { name: impala, uid: 1005 }
+    - { name: ranger, uid: 1006 }
+    - { name: spark, uid: 1007 }
+    - { name: hbase, uid: 1008 }
+    - { name: hue, uid: 1009 }
+    - { name: oozie, uid: 1010 }
+
+- name: Delete Hadoop Users of HDP 2.6.5
+  user:
+    name: "{{ item.name }}"
+    state: absent
+    force: yes
+  with_items:
+    - { name: ams, uid: 1011}
+    - { name: tez, uid: 1012 }
+    - { name: livy, uid: 1013 }
+    - { name: ambari-qa, uid: 1014 }
+    - { name: knox, uid: 1015 }
+    - { name: hcat, uid: 1016 }
+    - { name: slider, uid: 1018 }
+
+- name: Delete Hadoop Groups
+  group:
+    name: "{{ item.name }}"
+    state: absent
+  with_items:
+    - { name: zookeeper, uid: 1000 }
+    - { name: hdfs, uid: 1001 }
+    - { name: yarn, uid: 1002 }
+    - { name: mapred, uid: 1003 }
+    - { name: hive, uid: 1004 }
+    - { name: impala, uid: 1005 }
+    - { name: ranger, uid: 1006 }
+    - { name: spark, uid: 1007 }
+    - { name: hbase, uid: 1008 }
+    - { name: hue, uid: 1009 }
+    - { name: oozie, uid: 1010 }
+
+- name: Delete Hadoop Groups of HDP 2.6.5
+  group:
+    name: "{{ item.name }}"
+    state: absent
+  with_items:
+    - { name: ams, uid: 1011}
+    - { name: tez, uid: 1012 }
+    - { name: livy, uid: 1013 }
+    - { name: ambari-qa, uid: 1014 }
+    - { name: knox, uid: 1015 }
+    - { name: hcat, uid: 1016 }
+    - { name: slider, uid: 1018 }
+
+- name: Ensure group "hadoop" exists with correct gid
+  group:
+    name: hadoop
+    state: present
+    gid: 1100
+
+- name: Create Hadoop Groups
+  group:
+    name: "{{ item.name }}"
+    gid: "{{ item.uid }}"
+    state: present
+  with_items:
+    - { name: zookeeper, uid: 1000 }
+    - { name: hdfs, uid: 1001 }
+    - { name: yarn, uid: 1002 }
+    - { name: mapred, uid: 1003 }
+    - { name: hive, uid: 1004 }
+    - { name: impala, uid: 1005 }
+    - { name: ranger, uid: 1006 }
+    - { name: spark, uid: 1007 }
+    - { name: hbase, uid: 1008 }
+    - { name: hue, uid: 1009 }
+    - { name: oozie, uid: 1010 }
+
+- name: Create Hadoop Groups of HDP 2.6.5
+  group:
+    name: "{{ item.name }}"
+    gid: "{{ item.uid }}"
+    state: present
+  with_items:
+    - { name: ams, uid: 1011}
+    - { name: tez, uid: 1012 }
+    - { name: livy, uid: 1013 }
+    - { name: ambari-qa, uid: 1014 }
+    - { name: knox, uid: 1015 }
+    - { name: hcat, uid: 1016 }
+    - { name: slider, uid: 1018 }
+
+- name: Create Hadoop Users
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    group: "{{ item.name }}"
+    groups: hadoop
+    state: present
+  with_items:
+    - { name: zookeeper, uid: 1000 }
+    - { name: hdfs, uid: 1001 }
+    - { name: yarn, uid: 1002 }
+    - { name: mapred, uid: 1003 }
+    - { name: hive, uid: 1004 }
+    - { name: impala, uid: 1005 }
+    - { name: ranger, uid: 1006 }
+    - { name: spark, uid: 1007 }
+    - { name: hbase, uid: 1008 }
+    - { name: hue, uid: 1009 }
+    - { name: oozie, uid: 1010 }
+
+- name: Create Hadoop Users & Groups of HDP 2.6.5
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    group: "{{ item.name }}"
+    groups: hadoop
+    state: present
+  with_items:
+    - { name: ams, uid: 1011}
+    - { name: tez, uid: 1012 }
+    - { name: livy, uid: 1013 }
+    - { name: ambari-qa, uid: 1014 }
+    - { name: knox, uid: 1015 }
+    - { name: hcat, uid: 1016 }
+    - { name: slider, uid: 1018 }

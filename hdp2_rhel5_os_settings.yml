@@ -1,0 +1,9 @@
+---
+
+- name: Before Installation of HDP
+  hosts: chinalife
+  tasks:
+
+    - name: OS settings
+      include_role:
+        name: os_settings_cp2

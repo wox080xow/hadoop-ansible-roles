@@ -1,0 +1,9 @@
+---
+
+- name: Before Installation of Hadoop
+  hosts: chinalife_lab
+  tasks:
+
+    - name: Hadoop User & Group
+      include_role:
+        name: hadoop_user_group

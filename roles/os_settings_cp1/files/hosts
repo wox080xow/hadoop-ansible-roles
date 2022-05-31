@@ -1,0 +1,26 @@
+127.0.0.1 localhost
+#127.0.1.1 malvin-guest-template
+
+# The following lines are desirable for IPv6 capable hosts
+#::1     ip6-localhost ip6-loopback
+#fe00::0 ip6-localnet
+#ff00::0 ip6-mcastprefix
+#ff02::1 ip6-allnodes
+#ff02::2 ip6-allrouters
+
+# Hadoop CE (on KVM)
+# Ansible Control Machine
+172.16.1.72 malvin-ubuntu.example.com malvin-ubuntu
+# Ansible Managed Nodes
+# KVM Host OS
+172.16.1.71 malvin-host-01.example.com malvin-host-01
+172.16.1.101 malvin-host-02.example.com malvin-host-02
+# KVM Guest OS
+192.168.1.11 malvin-guest-01-01.example.com malvin-guest-01-01
+192.168.1.12 malvin-guest-01-02.example.com malvin-guest-01-02
+192.168.2.11 malvin-guest-02-01.example.com malvin-guest-02-01
+192.168.2.12 malvin-guest-02-02.example.com malvin-guest-02-02
+
+# Isilon VM
+172.16.1.231 isivm.example.com
+172.16.1.232 isivm.example.com

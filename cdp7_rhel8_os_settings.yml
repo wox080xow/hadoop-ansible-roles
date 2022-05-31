@@ -1,0 +1,9 @@
+---
+
+- name: Before Installation of CDH
+  hosts: chinalife_impala, chinalife_new
+  tasks:
+
+    - name: OS settings
+      include_role:
+        name: os_settings_cp1

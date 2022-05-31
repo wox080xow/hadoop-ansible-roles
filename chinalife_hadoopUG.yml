@@ -1,0 +1,10 @@
+---
+
+- name: Before Installation of Hadoop
+  hosts: chinalife
+  tasks:
+
+    - name: Hadoop User & Group
+      include_role:
+        name: hadoop_user_group
+        tasks_from: hdp.yml
